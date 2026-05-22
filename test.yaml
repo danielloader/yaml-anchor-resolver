@@ -1,0 +1,70 @@
+# 1. Scalar anchor — alias points to a single value
+database-host: &db-host db.prod.internal:5432
+primary:   *db-host
+replica:   *db-host
+
+# 2. Mapping anchor with merge key — the classic deduplication pattern
+defaults: &service-defaults
+  timeout: 30
+  retries: 3
+  log-level: info
+
+prod-api:
+  <<: *service-defaults
+  name: prod-api
+  port: 8080
+
+staging-api:
+  <<: *service-defaults
+  name: staging-api
+  log-level: debug   # local override wins over the merge
+
+# 3. Sequence anchor
+common-tags: &common-tags
+  - team:platform
+  - env:prod
+  - cost-center:infra
+
+service-a:
+  tags: *common-tags
+service-b:
+  tags: *common-tags
+
+# 4. Merging from multiple anchors
+network: &network
+  vpc: vpc-123
+  subnet: subnet-abc
+security: &security
+  iam-role: arn:aws:iam::000:role/app
+  kms-key: alias/app
+
+worker:
+  <<: [*network, *security]
+  name: worker-1
+
+# 5. Nested anchor inside a mapping anchor (chained resolution)
+base-image: &base-image
+  registry: ghcr.io
+  repo: acme/runtime
+  tag: 1.4.2
+
+pod-spec: &pod-spec
+  image: *base-image
+  resources:
+    cpu: 500m
+    memory: 512Mi
+
+deployment:
+  spec: *pod-spec
+
+# 6. Anchor on a list item
+steps:
+  - &checkout
+    name: Checkout
+    uses: actions/checkout@v4
+  - name: Build
+    uses: actions/setup-node@v4
+  - *checkout   # re-run checkout later in the pipeline
+
+# 7. Unresolved alias (no matching anchor) — should hover as "Unresolved"
+broken: *does-not-exist
