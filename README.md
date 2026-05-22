@@ -36,6 +36,9 @@ retries: 3
 
 ### Visual Studio Code
 
+> [!WARNING]
+> Not done it yet, use VSIX install from releases for now.
+
 Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=danielloader.yaml-anchor-resolver).
 
 ### Other editors (Cursor, VSCodium, Windsurf, code-server, …)
