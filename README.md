@@ -34,12 +34,22 @@ retries: 3
 
 ## Installation
 
-Install from the VS Code Marketplace, or build from source:
+### Visual Studio Code
+
+Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=danielloader.yaml-anchor-resolver).
+
+### Other editors (Cursor, VSCodium, Windsurf, code-server, …)
+
+Grab the latest `.vsix` from the [Releases page](https://github.com/danielloader/yaml-anchor-resolver/releases/latest), then:
+
+1. `Cmd/Ctrl + Shift + P` → **Extensions: Install from VSIX…**
+2. Pick the downloaded file.
+
+### From source
 
 ```sh
 npm install
-npm run package        # produces dist/extension.js
-npx @vscode/vsce package  # produces a .vsix you can install via "Extensions: Install from VSIX..."
+npx @vscode/vsce package   # produces yaml-anchor-resolver-<version>.vsix
 ```
 
 ## How it works
